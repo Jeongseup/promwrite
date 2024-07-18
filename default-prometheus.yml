@@ -1,0 +1,4 @@
+global:
+  scrape_interval: 30s # Set the scrape interval to every 30 seconds.
+
+scrape_configs:

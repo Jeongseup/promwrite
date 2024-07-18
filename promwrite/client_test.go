@@ -10,13 +10,12 @@ import (
 	"testing"
 	"time"
 
+	promwrite "github.com/castai/promwrite/promwrite"
 	"github.com/gogo/protobuf/proto"
 	"github.com/golang/snappy"
 	"github.com/stretchr/testify/require"
 
 	"github.com/prometheus/prometheus/prompb"
-
-	"github.com/castai/promwrite"
 )
 
 func TestClient(t *testing.T) {

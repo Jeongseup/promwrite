@@ -2,6 +2,14 @@
 
 Prometheus Remote Write Go client with minimal dependencies. Supports Prometheus, Cortex, VictoriaMetrics etc.
 
+### Update
+
+- Add stale markers
+  // Send Stale Markers
+  // Stale markers MUST be signalled by the special NaN value 0x7ff0000000000002. This value MUST NOT be used otherwise.
+  // ref; https://prometheus.io/docs/specs/remote_write_spec/
+  // https://github.com/prometheus/prometheus/blob/main/model/value/value.go
+
 ### Install
 
 ```
@@ -28,4 +36,12 @@ resp, err := client.Write(context.Background(), &promwrite.WriteRequest{
 		},
 	},
 })
+```
+
+```bash
+# start local prom
+./start_prometheus.sh
+
+# push test data
+go run .
 ```

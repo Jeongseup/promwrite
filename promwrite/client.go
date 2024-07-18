@@ -14,20 +14,8 @@ import (
 	"github.com/prometheus/prometheus/prompb"
 )
 
-type TimeSeries struct {
-	Labels []Label
-	Sample Sample
-}
-
-type Label struct {
-	Name  string
-	Value string
-}
-
-type Sample struct {
-	Time  time.Time
-	Value float64
-}
+// NOTE: prometheus remote write version is developing on v2.0.0
+// https://github.com/prometheus/prometheus/blob/main/storage/remote/client.go#L251
 
 // ClientOption is used to set custom client options.
 type ClientOption func(opts *clientOptions)
@@ -84,7 +72,11 @@ type WriteResponse struct {
 }
 
 // Write sends HTTP requests to Prometheus Remote Write compatible API endpoint including Prometheus, Cortex and VictoriaMetrics.
-func (p *Client) Write(ctx context.Context, req *WriteRequest, options ...WriteOption) (*WriteResponse, error) {
+func (p *Client) Write(
+	ctx context.Context,
+	req *WriteRequest,
+	options ...WriteOption,
+) (*WriteResponse, error) {
 	opts := writeOptions{}
 	for _, opt := range options {
 		opt(&opts)
@@ -104,6 +96,7 @@ func (p *Client) Write(ctx context.Context, req *WriteRequest, options ...WriteO
 	if err != nil {
 		return nil, err
 	}
+
 	httpReq.Header.Add("X-Prometheus-Remote-Write-Version", "0.1.0")
 	httpReq.Header.Add("Content-Encoding", "snappy")
 	httpReq.Header.Set("Content-Type", "application/x-protobuf")
